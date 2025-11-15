@@ -1,0 +1,44 @@
+## Build results
+bin/
+obj/
+out/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.localhistory/
+
+## Visual Studio
+.vs/
+*.vc.db
+*.VC.VC.opendb
+
+## DotNet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Logs
+*.log
+
+## Configuration files
+appsettings.*.local.json
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+## Resharper / Rider
+_ReSharper*/
+*.DotSettings.user
+.idea/
+
+## Auto-generated
+Generated/
