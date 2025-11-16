@@ -1,4 +1,4 @@
-﻿using GoVisit.Models;
+﻿using GoVisit.Enums;
 
 namespace GoVisit.DTOs
 {

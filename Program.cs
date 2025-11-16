@@ -1,24 +1,17 @@
 using System.Reflection;
 using GoVisit.Settings;
 using GoVisit.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
+using GoVisit.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Configuration
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 var mongoSettings = builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>();
 
-// DI: repository
 builder.Services.AddSingleton<IMongoClientFactory>(_ => new MongoClientFactory(mongoSettings.ConnectionString));
 builder.Services.AddScoped<IAppointmentRepository, MongoAppointmentRepository>();
 
-// MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-//builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-
-// Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,6 +27,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseAuthorization();
+app.UseGlobalExceptionHandling();
 app.MapControllers();
 
 app.Run();

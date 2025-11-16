@@ -48,5 +48,20 @@ namespace GoVisit.Infrastructure
             var result = await _collection.DeleteOneAsync(a => a.Id == id);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
+
+        public async Task<bool> IsSlotAvailableAsync(string serviceId, DateTime startAt, DateTime endAt, CancellationToken cancellationToken)
+        {
+
+            var filter = Builders<Appointment>.Filter.And(
+                Builders<Appointment>.Filter.Eq(a => a.ServiceId, serviceId),
+                Builders<Appointment>.Filter.Lt(a => a.StartAt, endAt),
+                Builders<Appointment>.Filter.Gt(a => a.EndAt, startAt)   
+            );
+
+            var count = await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+
+            return count == 0;
+        }
     }
 }
+

@@ -10,5 +10,6 @@ namespace GoVisit.Infrastructure
         Task<IEnumerable<Appointment>> GetAllAsync(int limit = 50);
         Task<bool> UpdateAsync(Appointment appointment);
         Task<bool> DeleteAsync(string id);
+        Task<bool> IsSlotAvailableAsync(string serviceId, DateTime startAt, DateTime endAt, CancellationToken cancellationToken);
     }
 }

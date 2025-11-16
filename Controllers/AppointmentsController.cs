@@ -8,28 +8,25 @@ namespace GoVisit.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class AppointmentsController : ControllerBase
+    public class AppointmentsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public AppointmentsController(IMediator mediator) => _mediator = mediator;
-
         /// <summary>
         /// Create appointment
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateAppointmentDto dto)
+        public async Task<IActionResult> Createappointment([FromBody] CreateAppointmentDto dto)
         {
-            var result = await _mediator.Send(new CreateAppointmentCommand(dto));
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            var appointment = await mediator.Send(new CreateAppointmentCommand(dto));
+            return CreatedAtAction(nameof(GetById), new { id = appointment.Id }, appointment);
         }
 
         /// <summary>
         /// Update appointment (partial)
         /// </summary>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] UpdateAppointmentDto updateDto)
+        public async Task<IActionResult> Updateappointment(string id, [FromBody] UpdateAppointmentDto updateDto)
         {
-            var ok = await _mediator.Send(new UpdateAppointmentCommand(id, updateDto));
+            var ok = await mediator.Send(new UpdateAppointmentCommand(id, updateDto));
             if (!ok) return NotFound();
             return NoContent();
         }
@@ -38,9 +35,9 @@ namespace GoVisit.Controllers
         /// Delete appointment
         /// </summary>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteAppointment(string id)
         {
-            var ok = await _mediator.Send(new DeleteAppointmentCommand(id));
+            var ok = await mediator.Send(new DeleteAppointmentCommand(id));
             if (!ok) return NotFound();
             return NoContent();
         }
@@ -49,10 +46,10 @@ namespace GoVisit.Controllers
         /// Get list of appointments
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetList([FromQuery] int limit = 50)
+        public async Task<IActionResult> GetAppointments([FromQuery] int limit = 50)
         {
-            var list = await _mediator.Send(new GetAppointmentsQuery(limit));
-            return Ok(list);
+            var appointments = await mediator.Send(new GetAppointmentsQuery(limit));
+            return Ok(appointments);
         }
 
         /// <summary>
@@ -61,9 +58,9 @@ namespace GoVisit.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var a = await _mediator.Send(new GetAppointmentByIdQuery(id));
-            if (a is null) return NotFound();
-            return Ok(a);
+            var appointment = await mediator.Send(new GetAppointmentByIdQuery(id));
+            if (appointment is null) return NotFound();
+            return Ok(appointment);
         }
     }
 }

@@ -1,15 +1,9 @@
-﻿using MongoDB.Bson;
+﻿using GoVisit.Enums;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace GoVisit.Models
 {
-    public enum AppointmentStatus
-    {
-        Scheduled,
-        Confirmed,
-        Cancelled,
-        Completed
-    }
 
     public class Appointment
     {
